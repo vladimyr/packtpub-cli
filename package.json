@@ -1,0 +1,18 @@
+{
+  "name": "packtpub-downloader",
+  "version": "1.0.0",
+  "description": "utility for downloading freely offered books from packtpub",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ebook",
+    "pdf",
+    "epub",
+    "download",
+    "packtpub"
+  ],
+  "author": "vladimyr",
+  "license": "MIT"
+}

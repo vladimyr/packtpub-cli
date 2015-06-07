@@ -1,0 +1,6 @@
+# deps
+node_modules
+
+# editors
+.idea
+*.sublime-*
