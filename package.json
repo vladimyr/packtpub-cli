@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "utility for downloading freely offered books from packtpub",
   "main": "index.js",
+  "bin": {
+    "packtpub-download": "cli.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,6 +16,16 @@
     "download",
     "packtpub"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vladimyr/packtpub-downloader.git"
+  },
   "author": "vladimyr",
-  "license": "MIT"
+  "license": "WTFPL",
+  "dependencies": {
+    "bluebird": "^2.9.27",
+    "cheerio": "^0.19.0",
+    "request": "^2.57.0",
+    "yargs": "^3.8.0"
+  }
 }

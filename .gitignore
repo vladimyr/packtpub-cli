@@ -4,3 +4,6 @@ node_modules
 # editors
 .idea
 *.sublime-*
+
+# private stuff
+config.json
