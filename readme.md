@@ -17,8 +17,8 @@ credentials. Example of configuration:
 
 ```json
 {
-  "username": "<put your username here>",
-  "password": "<put your password here>"
+  "username": "{{ put your username here }}",
+  "password": "{{ put your password here }}"
 }        
 ```
 
@@ -26,9 +26,16 @@ credentials. Example of configuration:
 ## How to use
 
 Invoke inside your terminal with provided path to configuration file.
-Optionally you can force specific download type or redirect download to
-stdout for further redirections:
+Optionally you can force specific download type, provide destination directory
+or even dump ebook contents output to stdout for further piping:
 
 ```bash
-packtpub-download -c <path_to_config_file> [-t "pdf|epub|mobi" -o <use-stdout>]
+packtpub-download -c [config file] -t <type> -d <download dir>
+
+Options:
+  -c, --config      provide path to config file              [string] [required]
+  -t, --type        provide ebook type [pdf|epub|mobi] [string] [default: "pdf"]
+  -d, --directory   provide path to destination directory[string] [default: "."]
+  -o, --use-stdout  print contents to stanard output  [boolean] [default: false]
+  -h, --help        Show help                                          [boolean]
 ```
