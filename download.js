@@ -10,7 +10,7 @@ request = request.defaults({
   followRedirect: true,
   followAllRedirects: true
 });
-request = Promise.promisifyAll(request);
+request = Promise.promisifyAll(request, { multiArgs: true });
 
 var baseUrl = 'https://www.packtpub.com/';
 
