@@ -1,3 +1,13 @@
 {
-    "node": true
+  "undef": true,
+  "unused": true,
+  "node": true,
+  "predef": [ 
+    "-Promise", 
+    "-Blob",
+    "-fetch"
+  ],
+  "eqeqeq": true,
+  "newcap": false,
+  "globals": {}
 }

@@ -3,7 +3,6 @@
 var request = require('request'),
     Promise = require('bluebird'),
     cheerio = require('cheerio'),
-    fs      = require('fs'),
     Url     = require('url');
 
 request = request.defaults({
