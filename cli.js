@@ -25,7 +25,6 @@ var argv = yargs.usage('\n$0 -c [config file] -t <type> -d <download dir>')
   })
   .option('d', {
     alias: 'directory',
-    default: '.',
     type: 'string',
     describe: 'provide path to destination directory'
   })
@@ -61,7 +60,7 @@ fs.readFileAsync(config)
     if (!argv.useStdout) {
       var filename = format('%s.%s', ebook.title, argv.type);
       stderr.write(format('\n Writing to "%s" ...  ', filename));
-      var filepath = resolve(argv.directory, filename);
+      var filepath = resolve(argv.directory || process.cwd(), filename);
       outputStream = fs.createWriteStream(filepath);
     } else {
       outputStream = process.stdout;
