@@ -33,9 +33,9 @@ or even dump ebook contents output to stdout for further piping:
 packtpub-download -c [config file] -t <type> -d <download dir>
 
 Options:
-  -c, --config      provide path to config file              [string] [required]
-  -t, --type        provide ebook type [pdf|epub|mobi] [string] [default: "pdf"]
-  -d, --directory   provide path to destination directory[string] [default: "."]
-  -o, --use-stdout  print contents to stanard output  [boolean] [default: false]
-  -h, --help        Show help                                          [boolean]
+  -c, --config      provide path to config file             [string] [required]
+  -t, --type        provide ebook type [pdf|epub|mobi]         [default: "pdf"]
+  -d, --directory   provide path to destination directory              [string]
+  -o, --use-stdout  print contents to stanard output           [default: false]
+  -h, --help        Show help                                         [boolean]
 ```
