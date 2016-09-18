@@ -56,7 +56,7 @@ function getBookData(offerPage) {
   };
 }
 
-module.exports = function downloadEbook(options) {
+module.exports = function downloadBook(options) {
   options = options || {};
 
   var downloadType = options.downloadType || 'pdf';

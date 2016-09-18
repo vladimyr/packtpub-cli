@@ -1,6 +1,6 @@
 {
   "name": "packtpub-downloader",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "utility for downloading freely offered books from packtpub",
   "main": "download.js",
   "bin": {
@@ -25,6 +25,7 @@
   "dependencies": {
     "bluebird": "^3.4.0",
     "cheerio": "^0.22.0",
+    "ora": "^0.3.0",
     "request": "^2.72.0",
     "yargs": "^5.0.0"
   }
