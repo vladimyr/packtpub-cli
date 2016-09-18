@@ -50,8 +50,8 @@ function getBookData(offerPage) {
   var bookTitle = $('.dotd-title h2').text().trim();
 
   return {
-    bookId: bookId,
-    bookTitle: bookTitle,
+    id: bookId,
+    title: bookTitle,
     claimUrl: claimUrl
   };
 }
@@ -63,7 +63,7 @@ module.exports = function downloadEbook(options) {
   var username = options.username;
   var password = options.password;
 
-  var bookId, bookTitle;
+  var book;
 
   return request.getAsync(baseUrl)
     .spread(function complete(_, body) {
@@ -78,17 +78,12 @@ module.exports = function downloadEbook(options) {
       }
     })
     .spread(function complete(_, body) {
-      var data = getBookData(body);
-      bookId = data.bookId;
-      bookTitle = data.bookTitle;
-      return request.getAsync(data.claimUrl);
+      book = getBookData(body);
+      return request.getAsync(book.claimUrl);
     })
     .spread(function complete() {
-      var downloadUrl = Url.resolve(ebookDownloadUrl, bookId + '/' + downloadType);
-      return {
-        id: bookId,
-        title: bookTitle,
-        byteStream: request.get(downloadUrl)
-      };
+      var downloadUrl = Url.resolve(ebookDownloadUrl, book.id + '/' + downloadType);
+      book.byteStream = function() { return request.get(downloadUrl); };
+      return book;
     });
 };

@@ -66,7 +66,7 @@ fs.readFileAsync(config)
       outputStream = process.stdout;
     }
 
-    ebook.byteStream
+    ebook.byteStream()
       .on('end', function() { if (!argv.useStdout) stderr.write('Done!\n\n'); })
       .pipe(outputStream);
   })
