@@ -18,25 +18,25 @@ var argv = yargs.version(pkg.version)
     alias: 'config',
     demand: true,
     type: 'string',
-    describe: 'provide path to config file'
+    describe: 'Provide path to config file'
   })
   .option('t', {
     alias: 'type',
     default: 'pdf',
     type: 'string',
     choices: [ 'pdf', 'epub', 'mobi' ],
-    describe: 'provide ebook type'
+    describe: 'Provide ebook type'
   })
   .option('d', {
     alias: 'directory',
     type: 'string',
-    describe: 'provide path to destination directory'
+    describe: 'Provide path to destination directory'
   })
   .option('o', {
     alias: 'use-stdout',
     default: false,
     type: 'boolean',
-    describe: 'print contents to stanard output'
+    describe: 'Print contents to stanard output'
   })
   .help('h').alias('h', 'help')
   .argv;
