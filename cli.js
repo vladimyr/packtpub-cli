@@ -69,4 +69,7 @@ fs.readFileAsync(config)
     ebook.byteStream
       .on('end', function() { if (!argv.useStdout) stderr.write('Done!\n\n'); })
       .pipe(outputStream);
+  })
+  .error(function onError(err) {
+    console.error('Error:', err.message);
   });
