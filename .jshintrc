@@ -2,12 +2,9 @@
   "undef": true,
   "unused": true,
   "node": true,
-  "predef": [ 
-    "-Promise", 
-    "-Blob",
-    "-fetch"
+  "predef": [
+    "-Promise"
   ],
   "eqeqeq": true,
-  "newcap": false,
-  "globals": {}
+  "newcap": false
 }
