@@ -24,8 +24,8 @@
   "license": "WTFPL",
   "dependencies": {
     "bluebird": "^3.4.0",
-    "cheerio": "^0.20.0",
+    "cheerio": "^0.22.0",
     "request": "^2.72.0",
-    "yargs": "^4.7.1"
+    "yargs": "^5.0.0"
   }
 }
