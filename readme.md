@@ -13,7 +13,7 @@ npm install -g vladimyr/packtpub-downloader
 ## Configuration
 
 PacktPub downloader uses JSON configuration for retrieving login 
-credentials. Example of configuration:
+credentials. Configuration can be permanently stored at `~/.config/packtpub-downloader/config.json` or provided through runtime flag. Example of configuration:
 
 ```json
 {
@@ -34,7 +34,7 @@ packtpub-download -c [config file] -t <type> -d <download dir>
 
 Options:
   --version         Show version number                               [boolean]
-  -c, --config      Provide path to config file             [string] [required]
+  -c, --config      Provide path to config file                        [string]
   -t, --type        Provide ebook type
                      [string] [choices: "pdf", "epub", "mobi"] [default: "pdf"]
   -d, --directory   Provide path to destination directory              [string]
