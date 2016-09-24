@@ -28,6 +28,7 @@
   "dependencies": {
     "bluebird": "^3.4.0",
     "cheerio": "^0.22.0",
+    "configstore": "^2.1.0",
     "ora": "^0.3.0",
     "request": "^2.72.0",
     "url-join": "^1.1.0",

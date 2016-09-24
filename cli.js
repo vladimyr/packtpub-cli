@@ -5,6 +5,7 @@
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
 const pathResolve = require('path').resolve;
+const Configstore = require('configstore');
 const yargs = require('yargs');
 const ora = require('ora');
 const pkg = require('./package.json');
@@ -16,7 +17,6 @@ let argv = yargs.version(pkg.version)
   .usage('\n$0 -c [config file] -t <type> -d <download dir>')
   .option('c', {
     alias: 'config',
-    demand: true,
     type: 'string',
     describe: 'Provide path to config file'
   })
@@ -68,7 +68,12 @@ readConfig(argv.config)
   .error(err => fail(err));
 
 function readConfig(path) {
-  return fs.readFileAsync(path).then(JSON.parse);
+  if (path) {
+    return fs.readFileAsync(path).then(JSON.parse);
+  }
+
+  let conf = new Configstore(pkg.name, null, { globalConfigPath: true });
+  return Promise.resolve(conf.all);
 }
 
 function getOutputStream(book, options) {
