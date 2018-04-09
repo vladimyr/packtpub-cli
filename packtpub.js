@@ -5,6 +5,7 @@ const Promise = require('bluebird');
 const cheerio = require('cheerio');
 const Url = require('url');
 const urlJoin = require('url-join');
+const qs = require('querystring');
 
 request = request.defaults({
   jar: true,
@@ -17,6 +18,8 @@ const baseUrl = 'https://www.packtpub.com/';
 
 const freeOffersUrl = urlJoin(baseUrl, '/packt/offers/free-learning');
 const ebookDownloadUrl = urlJoin(baseUrl, '/ebook_download/');
+
+const parseQuery = uri => qs.parse(uri.query);
 
 module.exports = { fetchBook };
 
@@ -35,11 +38,11 @@ function fetchBook(options) {
       return request.postAsync(baseUrl, { form });
     })
     .spread(resp => {
-      if (isRedirected(resp, 'https://www.packtpub.com/')) {
+      let query = parseQuery(resp.request.uri);
+      if (query.login) {
         return request.getAsync(freeOffersUrl);
-      } else {
-        return Promise.reject(new Promise.OperationalError('Using invalid credentials!'));
       }
+      return Promise.reject(new Promise.OperationalError('Using invalid credentials!'));
     })
     .spread((_, body) => {
       book = getBookData(body);
@@ -52,10 +55,6 @@ function fetchBook(options) {
         }
       });
     });
-}
-
-function isRedirected(resp, referer) {
-  return resp.request.headers.referer === referer;
 }
 
 function getFormData(loginPage, username, password) {
