@@ -13,7 +13,7 @@ const pkg = require('./package.json');
 const fetchBook = require('./packtpub.js').fetchBook;
 
 // Setup command line options parsing.
-let argv = yargs.version(pkg.version)
+const argv = yargs.version(pkg.version)
   .usage('\n$0 -c [config file] -t <type> -d <download dir>')
   .option('c', {
     alias: 'config',
@@ -49,18 +49,18 @@ console.error('\n# Downloading latest free ebook from packtpub.com\n');
 // Read credentials.
 readConfig(argv.config)
   .then(config => {
-    spinner = ora(`Logging in using provided credentials [username: ${ config.username }]`);
+    spinner = ora(`Logging in using provided credentials [username: ${config.username}]`);
     spinner.start();
 
     // Log in and fetch book data.
-    let options = Object.assign({}, config, { type: argv.type });
+    const options = Object.assign({}, config, { type: argv.type });
     return fetchBook(options);
   })
   .then(book => {
     spinner.succeed();
 
     // Download book from remote.
-    let downloadStream = book.byteStream();
+    const downloadStream = book.byteStream();
     downloadStream.on('end', () => succeed());
     downloadStream.on('error', err => fail(err));
     downloadStream.pipe(getOutputStream(book, argv));
@@ -72,22 +72,22 @@ function readConfig(path) {
     return fs.readFileAsync(path).then(JSON.parse);
   }
 
-  let conf = new Configstore(pkg.name, null, { globalConfigPath: true });
+  const conf = new Configstore(pkg.name, null, { globalConfigPath: true });
   return Promise.resolve(conf.all);
 }
 
 function getOutputStream(book, options) {
   if (options.useStdout) {
-    spinner = ora(`Downloading "${ book.title }" [book_id: ${ book.id }]`);
+    spinner = ora(`Downloading "${book.title}" [book_id: ${book.id}]`);
     spinner.start();
     return process.stdout;
   }
 
-  let filename = `${ book.title }.${ argv.type }`;
-  spinner = ora(`Writing to "${ filename }" [book_id: ${ book.id }]`);
+  const filename = `${book.title}.${argv.type}`;
+  spinner = ora(`Writing to "${filename}" [book_id: ${book.id}]`);
   spinner.start();
 
-  let filepath = pathResolve(argv.directory || process.cwd(), filename);
+  const filepath = pathResolve(argv.directory || process.cwd(), filename);
   return fs.createWriteStream(filepath);
 }
 
@@ -98,7 +98,7 @@ function succeed(text) {
 }
 
 function fail(err) {
-  spinner.text = `Error: ${ err.message }`;
+  spinner.text = `Error: ${err.message}`;
   spinner.fail();
   console.error();
 }

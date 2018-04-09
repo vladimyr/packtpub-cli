@@ -26,19 +26,19 @@ module.exports = { fetchBook };
 function fetchBook(options) {
   options = options || {};
 
-  let type = options.type || 'pdf';
-  let username = options.username;
-  let password = options.password;
+  const type = options.type || 'pdf';
+  const username = options.username;
+  const password = options.password;
 
   let book;
 
   return request.getAsync(baseUrl)
     .spread((_, body) => {
-      let form = getFormData(body, username, password);
+      const form = getFormData(body, username, password);
       return request.postAsync(baseUrl, { form });
     })
     .spread(resp => {
-      let query = parseQuery(resp.request.uri);
+      const query = parseQuery(resp.request.uri);
       if (query.login) {
         return request.getAsync(freeOffersUrl);
       }
@@ -58,16 +58,17 @@ function fetchBook(options) {
 }
 
 function getFormData(loginPage, username, password) {
-  let $ = cheerio.load(loginPage);
-  let hiddenInputs = 'form#packt-user-login-form input[type="hidden"]';
+  const $ = cheerio.load(loginPage);
+  const hiddenInputs = 'form#packt-user-login-form input[type="hidden"]';
 
-  let formData = {
-    email: username, password,
+  const formData = {
+    email: username,
+    password,
     op: 'Login'
   };
 
   $(hiddenInputs).each((i, el) => {
-    let $el = $(el);
+    const $el = $(el);
     formData[$el.attr('name')] = $el.attr('value');
   });
 
@@ -75,17 +76,17 @@ function getFormData(loginPage, username, password) {
 }
 
 function getBookId(claimUrl) {
-  let path = Url.parse(claimUrl).path;
-  let tokens = path.replace(/^\//, '').split('/');
+  const path = Url.parse(claimUrl).path;
+  const tokens = path.replace(/^\//, '').split('/');
   return tokens[1];
 }
 
 function getBookData(offerPage) {
-  let $ = cheerio.load(offerPage);
+  const $ = cheerio.load(offerPage);
 
-  let claimUrl = urlJoin(baseUrl, $('.dotd-main-book-form form').attr('action'));
-  let id = getBookId(claimUrl);
-  let title = $('.dotd-title h2').text().trim();
+  const claimUrl = urlJoin(baseUrl, $('.dotd-main-book-form form').attr('action'));
+  const id = getBookId(claimUrl);
+  const title = $('.dotd-title h2').text().trim();
 
   return { id, title, claimUrl };
 }
