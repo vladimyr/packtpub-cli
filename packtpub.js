@@ -84,7 +84,7 @@ function getBookId(claimUrl) {
 function getBookData(offerPage) {
   let $ = cheerio.load(offerPage);
 
-  let claimUrl = urlJoin(baseUrl, $('[class$="claim"]').attr('href'));
+  let claimUrl = urlJoin(baseUrl, $('.dotd-main-book-form form').attr('action'));
   let id = getBookId(claimUrl);
   let title = $('.dotd-title h2').text().trim();
 
