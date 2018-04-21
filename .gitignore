@@ -1,9 +1,17 @@
 # deps
 node_modules
 
+# logs
+logs
+*.log
+npm-debug.log*
+
+# private stuff
+config.json
+
 # editors
 .idea
 *.sublime-*
 
-# private stuff
-config.json
+# general
+.DS_Store
