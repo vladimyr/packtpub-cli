@@ -15,43 +15,35 @@ request = request.defaults({
 request = Promise.promisifyAll(request, { multiArgs: true });
 
 const baseUrl = 'https://www.packtpub.com/';
-
-const freeOffersUrl = urlJoin(baseUrl, '/packt/offers/free-learning');
-const ebookDownloadUrl = urlJoin(baseUrl, '/ebook_download/');
-
 const parseQuery = uri => qs.parse(uri.query);
 
-module.exports = { fetchBook };
+module.exports = { login, fetchBook };
 
-function fetchBook(options) {
-  options = options || {};
-
-  const type = options.type || 'pdf';
-  const username = options.username;
-  const password = options.password;
-
-  let book;
-
+function login(username, password) {
   return request.getAsync(baseUrl)
-    .spread((_, body) => {
-      const form = getFormData(body, username, password);
+    .spread((_, html) => {
+      const form = getFormData(html, username, password);
       return request.postAsync(baseUrl, { form });
     })
     .spread(resp => {
       const query = parseQuery(resp.request.uri);
-      if (query.login) {
-        return request.getAsync(freeOffersUrl);
-      }
-      return Promise.reject(new Promise.OperationalError('Using invalid credentials!'));
-    })
-    .spread((_, body) => {
-      book = getBookData(body);
-      return request.getAsync(book.claimUrl);
-    })
-    .then(() => {
+      if (query.login) return;
+      const err = new Promise.OperationalError('Using invalid credentials!');
+      return Promise.reject(err);
+    });
+}
+
+function fetchBook({ username, password, type = 'pdf' } = {}) {
+  const freeOffersUrl = urlJoin(baseUrl, '/packt/offers/free-learning');
+
+  return login(username, password)
+    .then(() => request.getAsync(freeOffersUrl))
+    .spread((_, html) => {
+      const book = getBookData(html);
       return Object.assign(book, {
         byteStream() {
-          return request.get(urlJoin(ebookDownloadUrl, book.id, type));
+          const downloadUrl = urlJoin(baseUrl, '/ebook_download/', book.id, type);
+          return request.get(downloadUrl);
         }
       });
     });
@@ -75,12 +67,6 @@ function getFormData(loginPage, username, password) {
   return formData;
 }
 
-function getBookId(claimUrl) {
-  const path = Url.parse(claimUrl).path;
-  const tokens = path.replace(/^\//, '').split('/');
-  return tokens[1];
-}
-
 function getBookData(offerPage) {
   const $ = cheerio.load(offerPage);
 
@@ -89,4 +75,10 @@ function getBookData(offerPage) {
   const title = $('.dotd-title h2').text().trim();
 
   return { id, title, claimUrl };
+}
+
+function getBookId(claimUrl) {
+  const path = Url.parse(claimUrl).path;
+  const tokens = path.replace(/^\//, '').split('/');
+  return tokens[1];
 }
