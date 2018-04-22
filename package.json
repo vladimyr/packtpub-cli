@@ -4,7 +4,7 @@
   "description": "utility for downloading freely offered books from packtpub",
   "main": "download.js",
   "bin": {
-    "packtpub-download": "cli.js"
+    "packtpub": "cli.js"
   },
   "scripts": {
     "lint": "eslint **/*.js",
@@ -27,19 +27,23 @@
   "author": "vladimyr",
   "license": "WTFPL",
   "dependencies": {
-    "bluebird": "^3.4.0",
+    "aes256": "^1.0.3",
+    "bluebird": "^3.5.1",
+    "chalk": "^2.4.0",
     "cheerio": "^0.22.0",
-    "configstore": "^2.1.0",
-    "ora": "^0.3.0",
-    "request": "^2.72.0",
-    "url-join": "^1.1.0",
-    "yargs": "^5.0.0"
+    "inquirer": "^5.2.0",
+    "netrc": "^0.1.4",
+    "ora": "^2.0.0",
+    "request": "^2.85.0",
+    "url-join": "^4.0.0",
+    "write": "^1.0.3",
+    "yargs": "^11.0.0"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-semistandard": "^12.0.1",
     "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1"
