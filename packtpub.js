@@ -41,6 +41,9 @@ function fetchBook({ username, password, type = 'pdf' } = {}) {
     .spread((_, html) => {
       const book = getBookData(html);
       return Object.assign(book, {
+        filename(type = 'pdf') {
+          return `${book.title}.${type}`;
+        },
         byteStream() {
           const downloadUrl = urlJoin(baseUrl, '/ebook_download/', book.id, type);
           return request.get(downloadUrl);
@@ -70,11 +73,12 @@ function getFormData(loginPage, username, password) {
 function getBookData(offerPage) {
   const $ = cheerio.load(offerPage);
 
+  const url = urlJoin(baseUrl, $('.dotd-main-book-image a').attr('href'));
   const claimUrl = urlJoin(baseUrl, $('.dotd-main-book-form form').attr('action'));
   const id = getBookId(claimUrl);
   const title = $('.dotd-title h2').text().trim();
 
-  return { id, title, claimUrl };
+  return { id, title, url, claimUrl };
 }
 
 function getBookId(claimUrl) {
