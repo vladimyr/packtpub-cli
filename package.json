@@ -27,6 +27,7 @@
   "author": "vladimyr",
   "license": "WTFPL",
   "dependencies": {
+    "aes256": "^1.0.3",
     "bluebird": "^3.5.1",
     "chalk": "^2.4.0",
     "cheerio": "^0.22.0",
