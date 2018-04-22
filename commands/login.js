@@ -3,8 +3,8 @@
 const { login } = require('../packtpub');
 const { OperationalError } = require('bluebird');
 const { prompt } = require('inquirer');
+const { storeCredentials } = require('../lib/auth');
 const chalk = require('chalk');
-const netrc = require('../lib/netrc');
 
 const isOperationalError = err => err instanceof OperationalError;
 const notEmpty = input => input && input.length > 0;
@@ -32,9 +32,7 @@ async function handler() {
   const { username, password } = await prompt(questions);
   try {
     await login(username, password);
-    const conf = await netrc.read();
-    conf['packtpub.com'] = { login: username, password };
-    netrc.write(conf);
+    await storeCredentials(username, password);
     console.log('\nSuccessfully logged to packtpub.com.');
   } catch (err) {
     if (!isOperationalError(err)) throw err;

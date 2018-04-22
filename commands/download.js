@@ -1,9 +1,9 @@
 'use strict';
 
 const { fetchBook } = require('../packtpub');
+const { getCredentials } = require('../lib/auth');
 const { OperationalError } = require('bluebird');
 const chalk = require('chalk');
-const netrc = require('../lib/netrc');
 const ora = require('ora');
 const path = require('path');
 const writeFile = require('write').stream;
@@ -33,16 +33,14 @@ module.exports = {
 };
 
 async function handler({ type, dir = process.cwd() }) {
-  const conf = await netrc.read();
-  const auth = conf['packtpub.com'];
+  const auth = await getCredentials();
   if (!auth) {
     console.error('\nYou are not logged in!');
     return;
   }
   let spinner;
   try {
-    const options = { username: auth.login, password: auth.password, type };
-    const book = await fetchBook(options);
+    const book = await fetchBook({ ...auth, type });
     console.log('\nDaily offer:');
     console.log(chalk`\n  {bold # ${book.title}}\n  {green ${book.url}}`);
     const filepath = path.join(dir, book.filename(type));

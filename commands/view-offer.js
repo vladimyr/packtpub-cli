@@ -1,9 +1,9 @@
 'use strict';
 
 const { fetchBook } = require('../packtpub');
+const { getCredentials } = require('../lib/auth');
 const { OperationalError } = require('bluebird');
 const chalk = require('chalk');
-const netrc = require('../lib/netrc');
 
 const isOperationalError = err => err instanceof OperationalError;
 
@@ -14,15 +14,13 @@ module.exports = {
 };
 
 async function handler() {
-  const conf = await netrc.read();
-  const auth = conf['packtpub.com'];
+  const auth = await getCredentials();
   if (!auth) {
     console.error('\nYou are not logged in!');
     return;
   }
   try {
-    const options = { username: auth.login, password: auth.password };
-    const book = await fetchBook(options);
+    const book = await fetchBook(auth);
     console.log('\nDaily offer:');
     console.log(chalk`\n  {bold # ${book.title}}\n  {green ${book.url}}`);
   } catch (err) {

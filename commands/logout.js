@@ -1,6 +1,6 @@
 'use strict';
 
-const netrc = require('../lib/netrc');
+const { removeCredentials } = require('../lib/auth');
 
 module.exports = {
   command: 'logout',
@@ -9,13 +9,10 @@ module.exports = {
 };
 
 async function handler() {
-  const conf = await netrc.read();
-  const credentials = conf['packtpub.com'];
-  if (!credentials) {
+  const removed = await removeCredentials();
+  if (!removed) {
     console.error('\nYou are not logged in!');
     return;
   }
-  delete conf['packtpub.com'];
-  await netrc.write(conf);
   console.log('\nLogged out from packtpub.com');
 }
