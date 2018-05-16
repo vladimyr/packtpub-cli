@@ -1,55 +1,47 @@
 'use strict';
 
 let request = require('request');
-const Promise = require('bluebird');
 const cheerio = require('cheerio');
+const Promise = require('bluebird');
+const qs = require('querystring');
 const Url = require('url');
 const urlJoin = require('url-join');
-const qs = require('querystring');
 
 request = request.defaults({
   jar: true,
   followRedirect: true,
   followAllRedirects: true
 });
-request = Promise.promisifyAll(request, { multiArgs: true });
+request = Promise.promisifyAll(request);
 
 const baseUrl = 'https://www.packtpub.com/';
+const freeOffersUrl = urlJoin(baseUrl, '/packt/offers/free-learning');
 const parseQuery = uri => qs.parse(uri.query);
 
 module.exports = { login, fetchBook };
 
-function login(username, password) {
-  return request.getAsync(baseUrl)
-    .spread((_, html) => {
-      const form = getFormData(html, username, password);
-      return request.postAsync(baseUrl, { form });
-    })
-    .spread(resp => {
-      const query = parseQuery(resp.request.uri);
-      if (query.login) return;
-      const err = new Promise.OperationalError('Using invalid credentials!');
-      return Promise.reject(err);
-    });
+async function login(username, password) {
+  const { body: html } = await request.getAsync(baseUrl);
+  const form = getFormData(html, username, password);
+  const resp = await request.postAsync(baseUrl, { form });
+  const query = parseQuery(resp.request.uri);
+  if (query.login) return;
+  throw new Promise.OperationalError('Using invalid credentials!');
 }
 
-function fetchBook({ username, password, type = 'pdf' } = {}) {
-  const freeOffersUrl = urlJoin(baseUrl, '/packt/offers/free-learning');
-
-  return login(username, password)
-    .then(() => request.getAsync(freeOffersUrl))
-    .spread((_, html) => {
-      const book = getBookData(html);
-      return Object.assign(book, {
-        filename(type = 'pdf') {
-          return `${book.title}.${type}`;
-        },
-        byteStream() {
-          const downloadUrl = urlJoin(baseUrl, '/ebook_download/', book.id, type);
-          return request.get(downloadUrl);
-        }
-      });
-    });
+async function fetchBook({ username, password, type = 'pdf' } = {}) {
+  await login(username, password);
+  const { body: html } = await request.getAsync(freeOffersUrl);
+  const book = getBookData(html);
+  return Object.assign(book, {
+    filename(type = 'pdf') {
+      return `${book.title}.${type}`;
+    },
+    byteStream() {
+      const downloadUrl = urlJoin(baseUrl, '/ebook_download/', book.id, type);
+      return request.get(downloadUrl);
+    }
+  });
 }
 
 function getFormData(loginPage, username, password) {
