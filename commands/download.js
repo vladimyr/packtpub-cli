@@ -2,34 +2,32 @@
 
 const { fetchBook } = require('../packtpub');
 const { getCredentials } = require('../lib/auth');
-const { OperationalError } = require('bluebird');
+const { wrap } = require('./helpers.js');
 const chalk = require('chalk');
 const ora = require('ora');
 const path = require('path');
 const writeFile = require('write').stream;
 
-const isOperationalError = err => err instanceof OperationalError;
-
 const options = {
-  type: {
-    alias: 't',
+  t: {
+    alias: 'type',
     default: 'pdf',
     type: 'string',
     choices: ['pdf', 'epub', 'mobi'],
-    describe: 'ebook filetype'
+    describe: 'Select book format'
   },
-  dir: {
-    alias: 'd',
+  d: {
+    alias: 'dir',
     type: 'string',
-    describe: 'download directory'
+    describe: 'Choose download directory'
   }
 };
 
 module.exports = {
   command: 'download',
-  desc: 'Download daily offer',
+  desc: chalk.whiteBright('Download book from daily offer'),
   builder: options,
-  handler
+  handler: wrap(handler)
 };
 
 async function handler({ type, dir = process.cwd() }) {
@@ -38,23 +36,22 @@ async function handler({ type, dir = process.cwd() }) {
     console.error('\nYou are not logged in!');
     return;
   }
+
+  const book = await fetchBook({ ...auth, type });
+  console.log(chalk`\n  {underline Daily offer:}`);
+  console.log(chalk`\n  {bold # ${book.title}}\n  {green ${book.url}}\n`);
+  const filepath = path.join(dir, book.filename(type));
+  console.log(chalk`Download location:\n  {green ${filepath}}\n`);
+
   let spinner;
   try {
-    const book = await fetchBook({ ...auth, type });
-    console.log('\nDaily offer:');
-    console.log(chalk`\n  {bold # ${book.title}}\n  {green ${book.url}}`);
-    const filepath = path.join(dir, book.filename(type));
-    console.log(chalk`\nDownload location:\n  {green ${filepath}}\n`);
-    spinner = ora(chalk`Downloading...`);
-    spinner.start();
+    spinner = ora('Downloading...').start();
     await download(book, filepath);
-    spinner.text = chalk`Downloaded`;
+    spinner.text = 'Downloaded';
     spinner.succeed();
   } catch (err) {
     if (spinner) spinner.fail();
-    if (!isOperationalError(err)) throw err;
-    console.error(chalk`\n{bgRed.white.bold Error} ${err.message}`);
-    process.exit(1);
+    throw err;
   }
 }
 

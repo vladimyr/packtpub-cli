@@ -2,30 +2,33 @@
 
 const { fetchBook } = require('../packtpub');
 const { getCredentials } = require('../lib/auth');
-const { OperationalError } = require('bluebird');
+const { wrap } = require('./helpers');
 const chalk = require('chalk');
+const opn = require('opn');
 
-const isOperationalError = err => err instanceof OperationalError;
+const options = {
+  w: {
+    alias: 'web',
+    type: 'boolean',
+    describe: 'Open daily offer in a web browser'
+  }
+};
 
 module.exports = {
   command: 'view-offer',
-  desc: 'Show daily offer',
-  handler
+  desc: chalk.whiteBright('Show daily offer'),
+  builder: options,
+  handler: wrap(handler)
 };
 
-async function handler() {
+async function handler({ web }) {
   const auth = await getCredentials();
   if (!auth) {
-    console.error('\nYou are not logged in!');
+    console.error('You are not logged in!');
     return;
   }
-  try {
-    const book = await fetchBook(auth);
-    console.log('\nDaily offer:');
-    console.log(chalk`\n  {bold # ${book.title}}\n  {green ${book.url}}`);
-  } catch (err) {
-    if (!isOperationalError(err)) throw err;
-    console.error(chalk`\n{bgRed.white.bold Error} ${err.message}`);
-    process.exit(1);
-  }
+  const book = await fetchBook(auth);
+  if (web) return opn(book.url);
+  console.log(chalk`\n  {underline Daily offer:}`);
+  console.log(chalk`\n  {bold # ${book.title}}\n  {green ${book.url}}\n`);
 }
