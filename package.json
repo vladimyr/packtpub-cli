@@ -1,31 +1,37 @@
 {
-  "name": "packtpub-downloader",
+  "name": "packtpub-cli",
   "version": "2.0.0",
-  "description": "utility for downloading freely offered books from packtpub",
-  "main": "download.js",
+  "description": "Download freely offered books from packtpub.com",
+  "main": "packtpub.js",
   "bin": {
     "packtpub": "cli.js"
   },
   "scripts": {
-    "lint": "eslint **/*.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "engines": {
-    "node": ">=4"
+    "lint": "eslint ."
   },
   "keywords": [
     "ebook",
     "pdf",
     "epub",
     "download",
+    "free",
+    "learning",
     "packtpub"
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/vladimyr/packtpub-downloader.git"
+    "url": "git://github.com/vladimyr/packtpub-cli.git"
   },
-  "author": "vladimyr",
+  "author": {
+    "email": "d.vladimyr@gmail.com",
+    "name": "Dario Vladovic",
+    "url": "github.com/vladimyr"
+  },
   "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/vladimyr/packtpub-cli/issues"
+  },
+  "homepage": "https://github.com/vladimyr/packtpub-cli",
   "dependencies": {
     "aes256": "^1.0.3",
     "bluebird": "^3.5.1",
