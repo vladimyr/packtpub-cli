@@ -1,4 +1,4 @@
-# packtpub-cli [![npm package version](https://img.shields.io/npm/v/peludna-prognoza.svg)](https://npm.im/packtpub-cli) [![github license](https://img.shields.io/github/license/vladimyr/packtpub-cli.svg)](https://github.com/vladimyr/packtpub-cli/blob/master/LICENSE) [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/Flet/semistandard)
+# packtpub-cli [![npm package version](https://img.shields.io/npm/v/packtpub-cli.svg)](https://npm.im/packtpub-cli) [![github license](https://img.shields.io/github/license/vladimyr/packtpub-cli.svg)](https://github.com/vladimyr/packtpub-cli/blob/master/LICENSE) [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/Flet/semistandard)
 
 >Download freely offered books from [packtpub.com](https://www.packtpub.com/packt/offers/free-learning)
 
