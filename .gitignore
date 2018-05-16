@@ -7,7 +7,7 @@ logs
 npm-debug.log*
 
 # private stuff
-config.json
+credentials.json
 
 # editors
 .idea
