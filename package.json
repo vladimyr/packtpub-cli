@@ -33,26 +33,26 @@
   },
   "homepage": "https://github.com/vladimyr/packtpub-cli",
   "dependencies": {
-    "aes256": "^1.0.3",
-    "bluebird": "^3.5.1",
+    "aes256": "^1.0.4",
+    "bluebird": "^3.5.2",
     "chalk": "^2.4.1",
     "cheerio": "^0.22.0",
-    "inquirer": "^5.2.0",
+    "inquirer": "^6.2.0",
     "netrc": "^0.1.4",
     "opn": "^5.3.0",
-    "ora": "^2.1.0",
-    "request": "^2.86.0",
+    "ora": "^3.0.0",
+    "request": "^2.88.0",
     "url-join": "^4.0.0",
     "write": "^1.0.3",
-    "yargs": "^11.0.0"
+    "yargs": "^12.0.2"
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
+    "eslint": "^5.6.0",
     "eslint-config-semistandard": "^12.0.1",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.11.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.1.0"
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0"
   }
 }
